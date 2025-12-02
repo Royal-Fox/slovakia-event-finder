@@ -11,8 +11,15 @@ export function useEvents() {
       if (!response.ok) {
         throw new Error("Failed to fetch events");
       }
-      return response.json();
+      const data = await response.json();
+      
+      // Handle both single object and array responses
+      if (Array.isArray(data)) {
+        return data;
+      }
+      // If it's a single object, wrap it in an array
+      return [data];
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 }
