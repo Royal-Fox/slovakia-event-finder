@@ -5,9 +5,12 @@ import { FilterBar } from "@/components/FilterBar";
 import { EventGrid } from "@/components/EventGrid";
 
 const Index = () => {
-  const { data: events = [], isLoading, error } = useEvents();
+  const { data, isLoading, error } = useEvents();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDay, setSelectedDay] = useState("all");
+
+  // Ensure events is always an array
+  const events = Array.isArray(data) ? data : [];
 
   // Get unique days for filter
   const availableDays = useMemo(() => {
