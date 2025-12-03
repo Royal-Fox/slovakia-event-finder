@@ -21,13 +21,17 @@ export function useEvents() {
         
         const data = await response.json();
         
-        // Handle both single object and array responses
+        // API returns array with object containing "items" array
+        if (Array.isArray(data) && data[0]?.items) {
+          return data[0].items;
+        }
+        // Fallback: direct array
         if (Array.isArray(data)) {
           return data;
         }
-        // If it's a single object, wrap it in an array
-        if (data && typeof data === 'object') {
-          return [data];
+        // Fallback: object with items
+        if (data?.items && Array.isArray(data.items)) {
+          return data.items;
         }
         return [];
       } catch (error) {
